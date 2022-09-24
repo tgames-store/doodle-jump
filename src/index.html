@@ -102,7 +102,7 @@
         .button {
             width: 105px;
             height: 31px;
-            background: url(https://yraaa.ru/test/119/images/2WEhF.png) 0 0 no-repeat;
+            background: url(https://github.com/tgames-store/doodle-jump/blob/main/src/images/Doodle-jump-photoset.png?raw=true) 0 0 no-repeat;
             display: block;
             color:  #000;
             font-size: 12px;
@@ -145,6 +145,21 @@
             z-index: 3;
             bottom: 2vh;
         }
+
+        #start-menu {
+            height: 100%;
+            width: 100%;
+            text-align: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 5;
+        }
+
+        #start-button {
+            width: 100px;
+            height: 100px;
+        }
     </style>
 </head>
 <body>
@@ -154,7 +169,22 @@
         </canvas>
 
         <div id="mainMenu">
-            <a class="button" id="start">Play</a>
+            <a class="button" id="start">Play ppp</a>
+        </div>
+
+        <div id="start-menu">
+            <div id="start-button">
+                <img src="images/play.png" alt="play button">
+            </div>
+        </div>
+
+        <div id="continue-menu">
+            <div id="skip-button">
+                <img src="images/skip.png" alt="play button">
+            </div>
+            <div id="watch-ads-button">
+                <img src="images/watch-ads.png" alt="play button">
+            </div>
         </div>
 
         <div id="gameOverMenu">
@@ -165,7 +195,7 @@
 
         </div>
 
-        <img id="sprite" src="images/doodleImages.png"/>
+        <img id="sprite" src="images/Doodle-jump-photoset.png"/>
 
         <div id="scoreBoard">
             <p id="score">0</p>

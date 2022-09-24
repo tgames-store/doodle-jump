@@ -10,7 +10,6 @@ window.requestAnimFrame = ( function() {
         };
 })();
 
-// todo: Разобраться с багом по очкам
 // todo: Исправить внешний вид методов
 
 var canvas = document.getElementById('canvas'),
@@ -805,7 +804,7 @@ function playerJump() {
 
 function update() {
     ctx.clearRect(0, 0, width, height);
-    playerJump();
+    // playerJump();
 }
 
 menuLoop = function() {
@@ -814,8 +813,7 @@ menuLoop = function() {
 };
 
 menuLoop();
-
-
+hideMenu();
 
 
 
