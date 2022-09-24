@@ -26,15 +26,15 @@ const containerButton = document.querySelector('.btn-container');
 
 // var width = 422,
 // height = 552;
-const width = Math.min(window.innerWidth, 422);
+const width = Math.min(window.innerWidth, 500);
 const height = window.innerHeight;
 
 canvas.width = width;
 canvas.height = height;
 
 window.addEventListener('resize', () => {
-    canvas.width = window.screen.width;
-    canvas.height = window.screen.height;
+    ctx.canvas.width = window.screen.width;
+    ctx.canvas.height = window.screen.height;
 })
 
 //Variables for game
@@ -519,27 +519,27 @@ function init() {
     //Platform's horizontal movement (and falling) algo
 
     function platformCalc() {
-    var subs = platform_broken_substitute;
+        var subs = platform_broken_substitute;
 
-    platforms.forEach(function(p, i) {
-        if (p.type == 2) {
-            if (p.x < 0 || p.x + p.width > width) {
-                p.vx *= -1;
+        platforms.forEach(function(p, i) {
+            if (p.type == 2) {
+                if (p.x < 0 || p.x + p.width > width) {
+                    p.vx *= -1;
+                }
+
+                p.x += p.vx;
             }
 
-            p.x += p.vx;
-        }
+            if (p.flag == 1 && subs.appearance === false && jumpCount === 0) {
+                subs.x = p.x;
+                subs.y = p.y;
+                subs.appearance = true;
 
-        if (p.flag == 1 && subs.appearance === false && jumpCount === 0) {
-            subs.x = p.x;
-            subs.y = p.y;
-            subs.appearance = true;
+                jumpCount++;
+            }
 
-            jumpCount++;
-        }
-
-        p.draw();
-    });
+            p.draw();
+        });
 
         if (subs.appearance === true) {
             subs.draw();
