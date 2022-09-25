@@ -15,7 +15,7 @@ window.requestAnimFrame = ( function() {
 var canvas = document.getElementById('canvas'),
 ctx = canvas.getContext('2d');
 
-const playButton = document.getElementById('start');
+const playButton = document.getElementById('start-button');
 playButton.addEventListener('click', init);
 
 const resetButton =  document.getElementById('reset');
@@ -25,16 +25,21 @@ const containerButton = document.querySelector('.btn-container');
 
 // var width = 422,
 // height = 552;
-const width = Math.min(window.innerWidth, 500);
-const height = window.innerHeight;
+let width = Math.min(window.innerWidth, 500);
+let height = window.innerHeight;
+let listenerResize;
+
+
+listenerResize = window.addEventListener('resize', handleResize)
+function handleResize() {
+    ctx.canvas.width = window.innerWidth;
+    ctx.canvas.height = window.innerHeight;
+    width = Math.min(window.innerWidth, 500);
+    height = window.innerHeight;
+}
 
 canvas.width = width;
 canvas.height = height;
-
-window.addEventListener('resize', () => {
-    ctx.canvas.width = window.screen.width;
-    ctx.canvas.height = window.screen.height;
-})
 
 //Variables for game
 var platforms = [],
@@ -316,6 +321,8 @@ var Spring = new spring();
 
 function init() {
     tgames.gameStarted();
+    document.getElementById('start-menu').style.display = 'none';
+    handleResize();
 
     //Variables for the game
     let	dir = "left",
@@ -680,9 +687,9 @@ function hideMenu() {
 
 //Shows the game over menu
 function showGoMenu() {
-    var menu = document.getElementById("gameOverMenu");
+    var menu = document.getElementById("continue-menu");
     menu.style.zIndex = 1;
-    menu.style.visibility = "visible";
+    menu.style.display = "flex";
 
     var scoreText = document.getElementById("go_score");
     scoreText.innerHTML = "Ваш результат " + score + " очков!";
