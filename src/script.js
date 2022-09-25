@@ -16,19 +16,30 @@ var canvas = document.getElementById('canvas'),
 ctx = canvas.getContext('2d');
 
 const playButton = document.getElementById('start-button');
-playButton.addEventListener('click', init);
+let handlePlayButton = playButton.addEventListener('click', init);
 
 const resetButton =  document.getElementById('reset');
 resetButton.addEventListener('click', reset);
 
+const skipButton = document.getElementById('skip-button');
+skipButton.addEventListener('click', showGoMenu);
+
+const watchAdsButton = document.getElementById('watch-ads-button');
+watchAdsButton.addEventListener('click', handleWatchAds);
+
 const containerButton = document.querySelector('.btn-container');
+var continueMenu = document.getElementById("continue-menu");
+var gameOverMenu = document.getElementById("gameOverMenu");
 
 // var width = 422,
 // height = 552;
 let width = Math.min(window.innerWidth, 500);
 let height = window.innerHeight;
 let listenerResize;
-
+let spareLife = true;
+let countShowAds = 3;
+let timeoutAds;
+let continueGame = false;
 
 listenerResize = window.addEventListener('resize', handleResize)
 function handleResize() {
@@ -36,6 +47,28 @@ function handleResize() {
     ctx.canvas.height = window.innerHeight;
     width = Math.min(window.innerWidth, 500);
     height = window.innerHeight;
+}
+
+function handleWatchAds() {
+    try {
+        tgames.showRewardedAd()
+            .then(() => {
+                reset();
+            })
+        spareLife = false;
+        continueGame = true;
+        clearTimeout(timeoutAds);
+    } catch (e) {
+        console.log(e)
+
+        spareLife = false;
+        continueGame = true;
+
+        reset();
+        clearTimeout(timeoutAds);
+    }
+
+    countShowAds--;
 }
 
 canvas.width = width;
@@ -322,6 +355,7 @@ var Spring = new spring();
 function init() {
     tgames.gameStarted();
     document.getElementById('start-menu').style.display = 'none';
+    // document.removeEventListener('click', handlePlayButton);
     handleResize();
 
     //Variables for the game
@@ -606,7 +640,7 @@ function init() {
 
     function gameOver() {
         tgames.gameOver( score );
-        tgames.showRewardedAd();
+        // tgames.showRewardedAd();
 
         containerButton.style.display = 'none';
         platforms.forEach(function(p, i) {
@@ -619,7 +653,13 @@ function init() {
         } else if (player.y < height / 2 ) {
             flag = 1;
         } else if ( player.y + player.height > height ) {
-            showGoMenu();
+            if (spareLife) {
+                showContinueMenu();
+
+                spareLife = false;
+            } else {
+                showGoMenu();
+            }
             hideScore();
             player.isDead = "lol";
         }
@@ -657,8 +697,8 @@ function init() {
 }
 
 function reset() {
-    tgames.gameStarted();
     containerButton.style.display = 'flex';
+    document.getElementById('reset-menu').style.display = 'none';
 
     hideGoMenu();
     showScore();
@@ -666,7 +706,12 @@ function reset() {
 
     flag = 0;
     position = 0;
-    score = 0;
+    if (!continueGame) {
+        score = 0;
+        tgames.gameStarted();
+    }
+
+    continueGame = false;
 
     base = new Base();
     player = new Player();
@@ -687,19 +732,44 @@ function hideMenu() {
 
 //Shows the game over menu
 function showGoMenu() {
-    var menu = document.getElementById("continue-menu");
-    menu.style.zIndex = 1;
-    menu.style.display = "flex";
+    continueMenu.style.zIndex = -1;
+    continueMenu.style.display = "none";
+    clearTimeout(timeoutAds);
+    spareLife = true;
+
+    document.getElementById('line').style.display = 'none';
+    document.getElementById('reset-menu').style.display = 'flex';
+    document.getElementById('reset-button')
+        .addEventListener('click', reset)
+
+    if (countShowAds === 0 || countShowAds < 0) {
+        tgames.showRewardedAd();
+        countShowAds = 3;
+    }
 
     var scoreText = document.getElementById("go_score");
     scoreText.innerHTML = "Ваш результат " + score + " очков!";
+    countShowAds--;
+}
+
+function showContinueMenu() {
+    continueMenu.style.zIndex = 1;
+    continueMenu.style.display = "flex";
+
+    document.getElementById('line').style.display = 'block';
+
+    timeoutAds = setTimeout(() => {
+        showGoMenu();
+    },8000);
 }
 
 //Hides the game over menu
 function hideGoMenu() {
-    var menu = document.getElementById("gameOverMenu");
-    menu.style.zIndex = -1;
-    menu.style.visibility = "hidden";
+    continueMenu.style.zIndex = -1;
+    continueMenu.style.display = "flex";
+
+    gameOverMenu.style.zIndex = -1;
+    gameOverMenu.style.visibility = "hidden";
 }
 
 //Show ScoreBoard

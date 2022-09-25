@@ -147,7 +147,8 @@
             bottom: 2vh;
         }
 
-        #start-menu {
+        #start-menu,
+        #reset-menu {
             height: 100vh;
             width: 100vw;
             position: absolute;
@@ -159,7 +160,12 @@
             z-index: 5;
         }
 
-        #start-button {
+        #reset-menu {
+            display: none;
+        }
+
+        #start-button,
+        #reset-button {
             width: 110px;
             height: 40px;
             background-repeat: no-repeat;
@@ -179,6 +185,23 @@
             z-index: 5;
         }
 
+        .container-ads-line {
+            width: 120px;
+            height: 5px;
+            position: relative;
+        }
+
+        #line {
+            width: 0;
+            height: 5px;
+            position: absolute;
+            background: #47BE33;
+            border-radius: 2px;
+            animation: ads-continue 8s ease-in-out;
+            left: 10px;
+            top: -20px;
+        }
+
         #skip-button {
             width: 120px;
             height: 40px;
@@ -192,6 +215,64 @@
             height: 40px;
             background-repeat: no-repeat;
             background-image: url(https://github.com/tgames-store/doodle-jump/blob/main/src/images/watch-ads.png?raw=true);
+        }
+
+        #blue_bug {
+            position: absolute;
+            top: 30%;
+            left: 15%;
+            width: 110px;
+            height: 40px;
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-image: url(https://github.com/tgames-store/doodle-jump/blob/main/src/images/blue_bug.png?raw=true);
+
+            animation: circle infinite 2s;
+        }
+
+        #yellow_bug {
+            position: absolute;
+            top: 60%;
+            left: 70%;
+            width: 110px;
+            height: 40px;
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-image: url(https://github.com/tgames-store/doodle-jump/blob/main/src/images/yellow_bug.png?raw=true);
+
+            animation: circle infinite 4s ease-in-out;
+        }
+
+        @keyframes ads-continue {
+            0% {
+                width: 100px;
+            }
+
+            100% {
+                width: 0px;
+            }
+        }
+
+        @keyframes circle {
+            0% {
+                transform: translate(0, -50%) rotate(45deg);
+            }
+
+            25% {
+                transform: translate(50%, 0) rotate(135deg);
+            }
+
+            50% {
+                transform: translate(0, 50%) rotate(270deg);
+            }
+
+            75% {
+                transform: translate(-50%, 0) rotate(135deg);
+            }
+
+            100% {
+                transform: translate(0, -50%) rotate(45deg);
+            }
         }
     </style>
 </head>
@@ -209,11 +290,18 @@
             <div id="start-button"></div>
         </div>
 
+        <div id="reset-menu">
+            <div id="reset-button"></div>
+        </div>
+
         <div id="continue-menu">
+            <div class="container-ads-line">
+                <div id="line"></div>
+            </div>
             <div id="skip-button"></div>
             <div id="watch-ads-button"></div>
-            <img src="images/blue_bug.png" alt="bug">
-            <img src="images/yellow_bug.png" alt="bug">
+            <div id="blue_bug"></div>
+            <div id="yellow_bug"></div>
         </div>
 
         <div id="gameOverMenu">
