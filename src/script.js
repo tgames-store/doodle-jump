@@ -47,6 +47,8 @@ function handleResize() {
     ctx.canvas.height = window.innerHeight;
     width = Math.min(window.innerWidth, 500);
     height = window.innerHeight;
+    base.draw();
+    Spring.draw();
 }
 
 function handleWatchAds() {
@@ -353,6 +355,11 @@ var spring = function() {
 var Spring = new spring();
 
 function init() {
+    base = new Base();
+    player = new Player();
+    Spring = new spring();
+    platform_broken_substitute = new Platform_broken_substitute();
+
     tgames.gameStarted();
     document.getElementById('start-menu').style.display = 'none';
     // document.removeEventListener('click', handlePlayButton);
@@ -699,6 +706,7 @@ function init() {
 function reset() {
     containerButton.style.display = 'flex';
     document.getElementById('reset-menu').style.display = 'none';
+    tgames.gameStarted();
 
     hideGoMenu();
     showScore();
@@ -708,7 +716,6 @@ function reset() {
     position = 0;
     if (!continueGame) {
         score = 0;
-        tgames.gameStarted();
     }
 
     continueGame = false;
