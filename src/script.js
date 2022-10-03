@@ -41,13 +41,18 @@ let countShowAds = 3;
 let timeoutAds;
 let continueGame = false;
 
-listenerResize = window.addEventListener('resize', handleResize)
+listenerResize = window.addEventListener('resize', handleResize);
+
 function handleResize() {
     ctx.canvas.width = window.innerWidth;
     ctx.canvas.height = window.innerHeight;
     width = Math.min(window.innerWidth, 500);
     height = window.innerHeight;
+
+    console.log('resize');
+    base = new Base()
     base.draw();
+    Spring = new Spring();
     Spring.draw();
 }
 
@@ -363,6 +368,7 @@ function init() {
     tgames.gameStarted();
     document.getElementById('start-menu').style.display = 'none';
     // document.removeEventListener('click', handlePlayButton);
+    console.log('resize');
     handleResize();
 
     //Variables for the game
@@ -373,6 +379,13 @@ function init() {
     const rightButton = document.getElementById('right-btn');
     containerButton.style.display = 'flex';
     firstRun = false;
+
+    // add btn controls for mobile
+    leftButton.addEventListener('touchstart', (event) => handleTouchStart(event, 'left'));
+    rightButton.addEventListener('touchstart', (event) => handleTouchStart(event, 'right'));
+
+    leftButton.addEventListener('touchend', (event) => handleTouchEnd(event, 'left'));
+    rightButton.addEventListener('touchend', (event) => handleTouchEnd(event, 'right'));
 
     //Function for clearing canvas in each consecutive frame
 
@@ -456,13 +469,6 @@ function init() {
         // add controls with keyboard
         document.onkeydown = handleKeydown;
         document.onkeyup = handleKeyup;
-
-        // add btn controls for mobile
-        leftButton.addEventListener('touchstart', (event) => handleTouchStart(event, 'left'));
-        rightButton.addEventListener('touchstart', (event) => handleTouchStart(event, 'right'));
-
-        leftButton.addEventListener('touchend', (event) => handleTouchEnd(event, 'left'));
-        rightButton.addEventListener('touchend', (event) => handleTouchEnd(event, 'right'));
 
         // Accelerations produces when the user hold the keys
         if (player.isMovingLeft === true) {
