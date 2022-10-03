@@ -49,10 +49,9 @@ function handleResize() {
     width = Math.min(window.innerWidth, 500);
     height = window.innerHeight;
 
-    console.log('resize');
     base = new Base()
     base.draw();
-    Spring = new Spring();
+    Spring = new spring();
     Spring.draw();
 }
 
